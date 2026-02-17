@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>체스 게임 - 송현진 vs AI</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="color-scheme" content="dark">
+
+    <!-- iOS (Safari) PWA 지원 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="체스">
+    <link rel="apple-touch-icon" href="icons/icon-192.svg">
+
+    <!-- 모바일 최적화 -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="송현진 vs AI 체스 대결! 레벨 1~10 난이도로 즐기세요.">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 시작 화면 -->
+    <div id="start-screen" class="screen active">
+        <div class="start-container">
+            <h1 class="title">체스 게임</h1>
+            <p class="subtitle">
+                <span class="name-player">송현진</span>
+                <span class="name-vs"> vs </span>
+                <span class="name-ai">AI</span>
+            </p>
+
+            <div class="level-section">
+                <h2>난이도 선택</h2>
+                <div class="level-grid">
+                    <button class="level-btn easy" data-level="1">Lv.1<br><span>아기</span></button>
+                    <button class="level-btn easy" data-level="2">Lv.2<br><span>초보</span></button>
+                    <button class="level-btn easy" data-level="3">Lv.3<br><span>입문</span></button>
+                    <button class="level-btn medium" data-level="4">Lv.4<br><span>초급</span></button>
+                    <button class="level-btn medium" data-level="5">Lv.5<br><span>중급</span></button>
+                    <button class="level-btn medium" data-level="6">Lv.6<br><span>중상급</span></button>
+                    <button class="level-btn hard" data-level="7">Lv.7<br><span>상급</span></button>
+                    <button class="level-btn hard" data-level="8">Lv.8<br><span>고급</span></button>
+                    <button class="level-btn hard" data-level="9">Lv.9<br><span>마스터</span></button>
+                    <button class="level-btn grandmaster" data-level="10">Lv.10<br><span>그랜드마스터</span></button>
+                </div>
+            </div>
+
+            <div class="color-section">
+                <h2>색상 선택</h2>
+                <div class="color-buttons">
+                    <button class="color-btn selected" data-color="white">
+                        <span class="piece-preview">♔</span> 백 (선공)
+                    </button>
+                    <button class="color-btn" data-color="black">
+                        <span class="piece-preview">♚</span> 흑 (후공)
+                    </button>
+                </div>
+            </div>
+
+            <button id="start-btn" class="start-btn">게임 시작!</button>
+        </div>
+    </div>
+
+    <!-- 게임 화면 -->
+    <div id="game-screen" class="screen">
+        <div class="game-layout">
+            <!-- 상단: AI 정보 -->
+            <div id="top-bar" class="player-bar bar-ai">
+                <div class="player-icon" id="top-icon">🤖</div>
+                <div class="turn-indicator" id="top-turn"></div>
+                <div class="player-info">
+                    <span class="player-name" id="ai-name">AI Lv.5 중급</span>
+                </div>
+                <div class="captured-pieces" id="ai-captured"></div>
+                <div class="score-diff" id="ai-score-diff"></div>
+            </div>
+
+            <div class="game-main">
+                <!-- 체스보드 -->
+                <div class="board-wrapper">
+                    <div class="board-container">
+                        <div class="file-labels top" id="file-labels-top"></div>
+                        <div class="board-with-ranks">
+                            <div class="rank-labels left" id="rank-labels-left"></div>
+                            <div id="board" class="board"></div>
+                            <div class="rank-labels right" id="rank-labels-right"></div>
+                        </div>
+                        <div class="file-labels bottom" id="file-labels-bottom"></div>
+                    </div>
+                    <!-- AI 생각 중 오버레이 -->
+                    <div id="thinking-overlay" class="thinking-overlay hidden">
+                        <div class="spinner"></div>
+                        <span>AI 생각 중...</span>
+                    </div>
+                </div>
+
+                <!-- 사이드 패널 -->
+                <div class="side-panel">
+                    <div class="move-history-panel">
+                        <h3>이동 기록</h3>
+                        <div id="move-history" class="move-history"></div>
+                    </div>
+                    <div class="controls">
+                        <button id="undo-btn" class="ctrl-btn" title="무르기">↩ 무르기</button>
+                        <button id="new-game-btn" class="ctrl-btn" title="새 게임">새 게임</button>
+                        <button id="resign-btn" class="ctrl-btn" title="기권">기권</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 하단: 플레이어 정보 -->
+            <div id="bottom-bar" class="player-bar bar-player">
+                <div class="player-icon" id="bottom-icon">😎</div>
+                <div class="turn-indicator" id="bottom-turn"></div>
+                <div class="player-info">
+                    <span class="player-name" id="player-name">송현진</span>
+                </div>
+                <div class="captured-pieces" id="player-captured"></div>
+                <div class="score-diff" id="player-score-diff"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 프로모션 모달 -->
+    <div id="promotion-modal" class="modal hidden">
+        <div class="modal-content promotion-content">
+            <h3>승급할 기물 선택</h3>
+            <div class="promotion-choices" id="promotion-choices"></div>
+        </div>
+    </div>
+
+    <!-- 게임오버 모달 -->
+    <div id="gameover-modal" class="modal hidden">
+        <div class="modal-content gameover-content" id="gameover-content">
+            <h2 id="gameover-title"></h2>
+            <p id="gameover-message"></p>
+            <div class="gameover-buttons">
+                <button id="rematch-btn" class="ctrl-btn">다시 하기</button>
+                <button id="menu-btn" class="ctrl-btn">메뉴로</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 송태은 큰아빠 응원 말풍선 -->
+    <div id="cheer-bubble" class="cheer-bubble">
+        <div class="cheer-name">송태은 큰아빠</div>
+        <div class="cheer-text" id="cheer-text"></div>
+    </div>
+
+    <script src="js/pieces.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/moves.js"></script>
+    <script src="js/evaluation.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/cheer.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Service Worker 등록 -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('./sw.js').catch(function() {});
+        });
+    }
+    </script>
+</body>
+</html>

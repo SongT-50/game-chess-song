@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="lt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5e6cc"/>
+      <stop offset="100%" style="stop-color:#f0d9b5"/>
+    </linearGradient>
+    <linearGradient id="dk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c4955a"/>
+      <stop offset="100%" style="stop-color:#b58863"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="url(#bg)"/>
+  <!-- Board shadow -->
+  <rect x="72" y="78" width="368" height="304" rx="8" fill="rgba(0,0,0,0.4)"/>
+  <!-- Board border -->
+  <rect x="66" y="70" width="368" height="304" rx="8" fill="#5c3d2e"/>
+  <!-- 4x4 mini board -->
+  <g transform="translate(76,80)">
+    <rect x="0" y="0" width="87" height="71" fill="url(#lt)"/>
+    <rect x="87" y="0" width="87" height="71" fill="url(#dk)"/>
+    <rect x="174" y="0" width="87" height="71" fill="url(#lt)"/>
+    <rect x="261" y="0" width="87" height="71" fill="url(#dk)"/>
+    <rect x="0" y="71" width="87" height="71" fill="url(#dk)"/>
+    <rect x="87" y="71" width="87" height="71" fill="url(#lt)"/>
+    <rect x="174" y="71" width="87" height="71" fill="url(#dk)"/>
+    <rect x="261" y="71" width="87" height="71" fill="url(#lt)"/>
+    <rect x="0" y="142" width="87" height="71" fill="url(#lt)"/>
+    <rect x="87" y="142" width="87" height="71" fill="url(#dk)"/>
+    <rect x="174" y="142" width="87" height="71" fill="url(#lt)"/>
+    <rect x="261" y="142" width="87" height="71" fill="url(#dk)"/>
+    <rect x="0" y="213" width="87" height="71" fill="url(#dk)"/>
+    <rect x="87" y="213" width="87" height="71" fill="url(#lt)"/>
+    <rect x="174" y="213" width="87" height="71" fill="url(#dk)"/>
+    <rect x="261" y="213" width="87" height="71" fill="url(#lt)"/>
+  </g>
+  <!-- Chess pieces (player=blue, ai=red) -->
+  <text x="207" y="190" font-size="64" fill="#e3f2fd" stroke="#1565c0" stroke-width="1" text-anchor="middle" font-family="serif" filter="url(#glow)">&#9812;</text>
+  <text x="337" y="330" font-size="64" fill="#4a0000" stroke="#b71c1c" stroke-width="1" text-anchor="middle" font-family="serif">&#9818;</text>
+  <text x="120" y="260" font-size="48" fill="#e3f2fd" stroke="#1565c0" stroke-width="0.8" text-anchor="middle" font-family="serif">&#9816;</text>
+  <text x="380" y="190" font-size="48" fill="#4a0000" stroke="#b71c1c" stroke-width="0.8" text-anchor="middle" font-family="serif">&#9822;</text>
+  <!-- Title text -->
+  <text x="256" y="446" font-size="42" fill="#4fc3f7" text-anchor="middle" font-family="sans-serif" font-weight="bold" letter-spacing="6">CHESS</text>
+  <text x="256" y="478" font-size="20" fill="rgba(192,192,208,0.7)" text-anchor="middle" font-family="sans-serif">송현진 vs AI</text>
+</svg>
